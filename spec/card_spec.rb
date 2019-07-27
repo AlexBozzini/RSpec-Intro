@@ -20,46 +20,50 @@ describe Card do
 		raise unless card(rank: 4).rank == 4
 	end
 
-	it 'is equal to itself' do
-		subject = card(suit: :spades, rank: 4)
-		other   = card(suit: :spades, rank: 4)
+	context 'equality' do
+		def subject
+			@subject ||= card(suit: :spades, rank: 4)
+		end
 
-		raise unless subject == other
-	end
+		it 'is equal to itself' do
+			other   = card(suit: :spades, rank: 4)
 
-	it 'is hash equal to itself' do
-		subject = card(suit: :spades, rank: 4)
-		other   = card(suit: :spades, rank: 4)
+			raise unless subject == other
+		end
 
-		raise unless Set.new([subject, other]).size == 1
-	end
+		it 'is hash equal to itself' do
+			other   = card(suit: :spades, rank: 4)
 
-	it 'is not equal to a card of differing suit' do
-		subject = card(suit: :spades, rank: 4)
-		other   = card(suit: :hearts, rank: 4)
+			raise unless Set.new([subject, other]).size == 1
+		end
 
-		raise unless subject != other
-	end
+		describe 'comparing to a card of a different suit' do
+			it 'is not equal' do
+				other   = card(suit: :hearts, rank: 4)
 
-	it 'is not hash equal to a card of a differing suit' do
-		subject = card(suit: :spades, rank: 4)
-		other   = card(suit: :hearts, rank: 4)
+				raise unless subject != other
+			end
 
-		raise unless Set.new([subject, other]).size == 2
-	end
+			it 'is not hash equal' do
+				other   = card(suit: :hearts, rank: 4)
 
-	it 'is not equal to a card of differing rank' do
-		subject = card(suit: :spades, rank: 4)
-		other   = card(suit: :spades, rank: 5)
+				raise unless Set.new([subject, other]).size == 2
+			end
+		end
 
-		raise unless subject != other
-	end
+		describe 'comparing to a card of a different rank' do
+			it 'is not equal' do
+				other   = card(suit: :spades, rank: 5)
 
-	it 'is not hash equal to a card of differing rank' do
-		subject = card(suit: :spades, rank: 4)
-		other   = card(suit: :spades, rank: 5)
+				raise unless subject != other
+			end
 
-		raise unless Set.new([subject, other]).size == 2
+			it 'is not hash equal' do
+				other   = card(suit: :spades, rank: 5)
+
+				raise unless Set.new([subject, other]).size == 2
+			end
+		end
 	end
 
 	describe 'a jack' do
